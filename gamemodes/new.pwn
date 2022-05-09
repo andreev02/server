@@ -18,7 +18,7 @@ main() { }
 
 public OnGameModeInit()
 {
-	SetGameModeText("Blank Script");
+	SetGameModeText("project");
 	return 1;
 }
 
