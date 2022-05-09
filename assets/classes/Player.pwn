@@ -1,20 +1,48 @@
-
 enum E_PLAYER 
 {
 	E_PLAYER_ID,
-	E_PLAYER_NAME
+	E_PLAYER_SKIN,
+	E_PLAYER_HEALTH,
+	E_PLAYER_ARMOUR,
 }
 
+new gPlayer[MAX_PLAYERS][E_PLAYER];
 
-static gPlayer[MAX_PLAYERS][E_PLAYER];
 
 
-stock GetCurrentPlayerName(playerid)
+stock GetPlayerCurrentName(playerid)
 {
 	new name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, name, MAX_PLAYER_NAME);
 	return name;
 }
+
+stock GetPlayerAccountID(playerid)
+{
+	new query[128], Cache:cache;
+	format(query, sizeof(query), "SELECT `ID` FROM `Players` WHERE `Name` = '%s'", GetPlayerCurrentName(playerid));
+	cache = mysql_query(gDataBaseHandler, query, true);
+
+	if(cache_num_rows() == 1)
+	{
+		new account_id;
+		cache_get_value_name_int(0, "ID", account_id);
+		return account_id;
+	}
+
+	cache_delete(cache);
+	return 0;
+}
+
+
+
+forward PlayerKick(playerid);
+public PlayerKick(playerid)
+{
+	Kick(playerid);
+	return 1;
+}
+
 
 
 public OnPlayerRequestClass(playerid, classid)
@@ -27,6 +55,17 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerConnect(playerid)
 {
+	if(!GetPlayerAccountID(playerid)) 
+	{
+		SendClientMessage(playerid, COLOR_WHITE, LANG_ACCOUNT_IS_NOT_REGISTERED);
+		return SetTimerEx("PlayerKick", 1000, 0, "i", playerid);
+	}
+
+	OpenDialog(playerid, "REGISTRATION_PASSWORD", DIALOG_STYLE_PASSWORD,
+		LANG_REGISTRATION,
+		"Test", 
+		LANG_ENTER, LANG_EXIT);
+
 	return 1;
 }
 
