@@ -1,3 +1,22 @@
+
+enum E_PLAYER 
+{
+	E_PLAYER_ID,
+	E_PLAYER_NAME
+}
+
+
+static gPlayer[MAX_PLAYERS][E_PLAYER];
+
+
+stock GetCurrentPlayerName(playerid)
+{
+	new name[MAX_PLAYER_NAME];
+	GetPlayerName(playerid, name, MAX_PLAYER_NAME);
+	return name;
+}
+
+
 public OnPlayerRequestClass(playerid, classid)
 {
 	SetPlayerPos(playerid, 19228.2783, 1343.3572, 15.3746);
