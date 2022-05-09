@@ -8,7 +8,7 @@
 #include "../include/a_mysql"
 #include "../include/dc_cmd"
 #include "../include/progress"
-#include "../include/tdw_dialog.inc"
+#include "../include/tdw_dialog"
 
 #include "../assets/assets.pwn"
 
@@ -16,20 +16,33 @@
 main() { }
 
 
+stock IntToStr(value)
+{
+	new string[11];
+	valstr(string, value);
+	return string;
+}
+
+stock Concat(const string1[], const string2[])
+{
+	new string:result[126];
+	format(result, sizeof(result), "%s%s", string1, string2);
+	return result;
+}
+
+
 public OnGameModeInit()
 {
 	SetGameModeText("project");
 	DisableInteriorEnterExits();
-
-	gDataBaseHandler = mysql_connect(SQL_HOST, SQL_USER, SQL_PASS, SQL_BASE);
-	if(mysql_errno(gDataBaseHandler) == 0) print("Database connected");
-	else printf("Error #%i. Connection to database failed!", mysql_errno(gDataBaseHandler));
+	ConnectDataBase();
 
 	return 1;
 }
 
 public OnGameModeExit()
 {
+	DisconnectDataBase();
 	return 1;
 }
 

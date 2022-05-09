@@ -1,9 +1,18 @@
-#define SQL_HOST "localhost"
-#define SQL_USER "gs37638"
-#define SQL_PASS "NqZUT7k7oR"
-#define SQL_BASE "gs37638"
-
 new MySQL:gDataBaseHandler;
+
+stock ConnectDataBase()
+{
+    gDataBaseHandler = mysql_connect(SQL_HOST, SQL_USER, SQL_PASS, SQL_BASE);
+	if(mysql_errno(gDataBaseHandler) == 0) print("Database connected");
+	else printf("Error #%i. Connection to database failed!", mysql_errno(gDataBaseHandler));
+
+    mysql_log();
+}
+
+stock DisconnectDataBase()
+{
+    mysql_close(gDataBaseHandler);
+}
 
 stock DataBaseGetString(fields[], String:value[])
 {

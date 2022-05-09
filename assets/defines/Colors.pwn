@@ -1,1 +1,2 @@
 #define COLOR_WHITE 0xFFFFFFFF
+#define COLOR_RED 0xff2b2bFF
