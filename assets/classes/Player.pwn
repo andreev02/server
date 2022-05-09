@@ -1,6 +1,6 @@
 public OnPlayerRequestClass(playerid, classid)
 {
-	SetPlayerPos(playerid, 1958.2783, 1343.3572, 15.3746);
+	SetPlayerPos(playerid, 19544.2783, 1343.3572, 15.3746);
 	SetPlayerCameraPos(playerid, 1958.3783, 1343.1572, 15.3746);
 	SetPlayerCameraLookAt(playerid, 1958.3783, 1343.1572, 15.3746);
 	return 1;
