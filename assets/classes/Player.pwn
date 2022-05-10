@@ -5,8 +5,8 @@ enum E_PLAYER
 {
 	E_PLAYER_ID,
 	E_PLAYER_SKIN,
-	E_PLAYER_HEALTH,
-	E_PLAYER_ARMOUR,
+	Float:E_PLAYER_HEALTH,
+	Float:E_PLAYER_ARMOUR,
 	bool:E_PLAYER_ISLOGGED
 }
 
@@ -22,6 +22,26 @@ stock GetPlayerCurrentName(playerid)
 	new name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, name, MAX_PLAYER_NAME);
 	return name;
+}
+
+stock ClearPlayerData(playerid)
+{
+	gPlayer[playerid][E_PLAYER_ID] = 0;
+	gPlayer[playerid][E_PLAYER_SKIN] = 0;
+
+	gPlayer[playerid][E_PLAYER_HEALTH] = 0.0;
+	gPlayer[playerid][E_PLAYER_ARMOUR] = 0.0;
+
+	gPlayer[playerid][E_PLAYER_ISLOGGED] = false;
+}
+
+stock LoadPlayerData(playerid)
+{
+	cache_get_value_name_int(0, "ID", gPlayer[playerid][E_PLAYER_ID]);
+	cache_get_value_name_int(0, "Skin", gPlayer[playerid][E_PLAYER_SKIN]);
+
+	cache_get_value_name_float(0, "Health", gPlayer[playerid][E_PLAYER_HEALTH]);
+	cache_get_value_name_float(0, "Armour", gPlayer[playerid][E_PLAYER_ARMOUR]);
 }
 
 stock KickPlayerWithDelay(playerid, delay)
@@ -73,6 +93,9 @@ public IsPlayerPasswordCorrect(playerid, const password[])
 		if(strcmp(password, account_password, false) == 0)
 		{
 			gPlayer[playerid][E_PLAYER_ISLOGGED] = true;
+
+			LoadPlayerData(playerid);
+
 			DeletePVar(playerid, "TryPassword");
 			SpawnPlayer(playerid);
 		}
@@ -124,6 +147,7 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
+	ClearPlayerData(playerid);
 	return 1;
 }
 
@@ -147,6 +171,8 @@ public OnPlayerSpawn(playerid)
 		Kick(playerid);
 		return 0;
 	}
+
+	SetPlayerSkin(playerid, gPlayer[playerid][E_PLAYER_SKIN]);
 
 	return 1;
 }

@@ -8,3 +8,4 @@
 #include "../assets/classes/Vehicle.pwn"
 #include "../assets/classes/Object.pwn"
 #include "../assets/classes/Pickup.pwn"
+#include "../assets/classes/Command.pwn"
